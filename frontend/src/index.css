@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* Layout Variables & CSS State Integration */
+:root {
+  --sidebar-width: 18rem; /* 288px (w-72) */
+  --content-offset: var(--sidebar-width);
+}
+
+/* Adjust layout offsets based on body state */
+body[data-sidebar-open="false"] {
+  --content-offset: 0px;
+}
+
+/* Global Base Styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-300 antialiased overflow-x-hidden min-h-screen w-full m-0 p-0;
+  }
+
+  #root {
+    @apply min-h-screen flex flex-col w-full overflow-x-hidden;
+  }
+
+  h1 {
+    @apply text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white;
+  }
+
+  h2 {
+    @apply text-2xl md:text-4xl font-semibold text-white;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl font-semibold text-white;
+  }
+
+  p {
+    @apply text-zinc-400 leading-relaxed;
+  }
+
+  a {
+    @apply transition-all duration-300;
+  }
+
+  code {
+    @apply font-mono text-sm px-2 py-1 rounded bg-zinc-900 text-zinc-200 border border-zinc-800;
+  }
+}
+
+/* Reusable Solid Components */
+@layer components {
+  .card-solid {
+    @apply bg-zinc-900 border border-zinc-800 rounded-2xl;
+  }
+
+  .card-solid-dark {
+    @apply bg-zinc-950 border border-zinc-800 rounded-2xl;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 transition-all duration-300 hover:opacity-90;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-200 transition-all duration-300 hover:bg-zinc-800 hover:text-white;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-5xl font-bold text-white mb-8;
+  }
+
+  .movie-card {
+    @apply overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800 transition-all duration-300 hover:scale-[1.02] hover:border-zinc-700;
+  }
+}
+
+/* Layout Utilities Driven by Menu State */
+@layer utilities {
+  .silver-text {
+    color: #c0c0c0;
+  }
+
+  .silver-gradient {
+    background: linear-gradient(90deg, #bfbfbf, #ffffff, #bfbfbf);
+  }
+
+  .glow-silver {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.08), 0 0 80px rgba(255, 255, 255, 0.04);
+  }
+
+  .bg-moviara {
+    background: #09090b;
+  }
+
+  /* Dynamically adjusts main content margin on desktop when menu expands or collapses */
+  .layout-main-content {
+    @apply w-full transition-all duration-300 ease-in-out;
+  }
+
+  @media (min-width: 1024px) {
+    .layout-main-content {
+      padding-left: var(--content-offset);
+    }
+  }
+}
