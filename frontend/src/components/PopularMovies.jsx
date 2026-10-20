@@ -1,238 +1,184 @@
-import React, { useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import MovieCarousel from "./MovieCarousel";
+import MovieGrid from "./MovieGrid";
+import MovieCardSkeleton from "./MovieCardSkeleton";
+import {
+  fetchTrendingMovies,
+  fetchPopularMovies,
+  fetchPopularSeries,
+  fetchAdultAnimation,
+  GENRES_LIST,
+} from "../services/movieApi";
+import { AlertCircle, RefreshCw, Flame, Tv, Film, Sparkles, Zap } from "lucide-react";
 
-const popularMovies = [
-  {
-    id: "1",
-    title: "Spider-Man: Brand New Day",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/23/748fe71156424200b57a1c377661fe79.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/spider-man-brand-new-day",
-  },
-  {
-    id: "2",
-    title: "Toy Story 5",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/06/16/503cde6da9515420e0e34a6ce16775fa.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/toy-story-5",
-  },
-  {
-    id: "3",
-    title: "Minions & Monsters",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/06/25/bc3256b25dc95b0c9cd1b5e2e093b0bd.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/minions-and-monsters",
-  },
-  {
-    id: "4",
-    title: "The Last House",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/14/e6202f59dc6fc69794e970fa29d874bf.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/the-last-house",
-  },
-  {
-    id: "5",
-    title: "Evil Dead Burn",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/02/fac73c3dec80cde46022ebee52e92f38.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/evil-dead-burn",
-  },
-  {
-    id: "6",
-    title: "The Devil's Mouth",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/15/520ce50bc1167f72a9ea8d2a17c199c8.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/the-devils-mouth",
-  },
-  {
-    id: "7",
-    title: "Supergirl",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/18/95354380ab9664258ed9baaba175c05e.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/supergirl",
-  },
-  {
-    id: "8",
-    title: "72 Hours",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/08/976254f604fd6244826ac091287ef929.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/72-hours",
-  },
-  {
-    id: "9",
-    title: "Colony",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/17/433a77890341b17f770fc61c042642ef.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/colony",
-  },
-  {
-    id: "10",
-    title: "Disclosure Day",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/16/bd4560586928581bfbc34c477c114025.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/disclosure-day",
-  },
-  {
-    id: "11",
-    title: "The Death of Robin Hood",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/30/3dda6351b063ad22eaf9ef445ff5f1eb-s.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/the-death-of-robin-hood",
-  },
-  {
-    id: "12",
-    title: "Star Wars: The Mandalorian and Grogu",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/15/bbff0b180c70fb78bb96785e6fa43374.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/star-wars-the-mandalorian-and-grogu",
-  },
-  {
-    id: "13",
-    title: "The Bay",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/17/8cb94013a82c29405b5cfdc7b481dccc.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/the-bay",
-  },
-  {
-    id: "14",
-    title: "Descendants: Wicked Wonderland",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/06/30/9a81bab0fa4d60ccaa2d666fd903f2b0.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/descendants-wicked-wonderland",
-  },
-  {
-    id: "15",
-    title: "The Furious",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/23/b6af8e3269563c85828beb0a6a268c4c.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/the-furious",
-  },
-  {
-    id: "16",
-    title: "Man of War",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/08/d6257f33bb7b09afa69d0875f08368ff.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/man-of-war",
-  },
-  {
-    id: "17",
-    title: "Wings of Dread",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/07/13/6565b4f2af5a2c7c41f6be7e5b8fd5dd.jpeg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/wings-of-dread",
-  },
-  {
-    id: "18",
-    title: "Obsession",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/16/a69b52ec29a3c4373f2c1c6e1576894e.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/obsession",
-  },
-  {
-    id: "19",
-    title: "Strung",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/12/3f64c67c9da243c84297138b1f9e8561.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/strung",
-  },
-  {
-    id: "20",
-    title: "Enola Holmes 3",
-    image:
-      "https://pbcdnw.aoneroom.com/image/2026/08/15/d48480366c338d374b133f922ef6a4da.jpg?x-oss-process=image/resize%2Cw_250",
-    url: "/moviedetail/enola-holmes-3",
-  },
-];
+export default function PopularMovies() {
+  const [trendingNow, setTrendingNow] = useState([]);
+  const [popularSeries, setPopularSeries] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [adultAnimation, setAdultAnimation] = useState([]);
 
-const MovieCardList = () => {
-  const scrollContainerRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState("All");
 
-  const scroll = (direction) => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth * 0.75;
-      scrollContainerRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+  const loadData = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const [trending, series, movies, animation] = await Promise.all([
+        fetchTrendingMovies().catch(() => []),
+        fetchPopularSeries(1).catch(() => []),
+        fetchPopularMovies(1).catch(() => []),
+        fetchAdultAnimation().catch(() => []),
+      ]);
+
+      setTrendingNow(trending);
+      setPopularSeries(series);
+      setPopularMovies(movies);
+      setAdultAnimation(animation);
+    } catch (err) {
+      console.error("Failed to load home page sections:", err);
+      setError(err.message || "Failed to load content from backend.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return (
-    <div className="w-full">
-      {/* Header Section */}
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-base font-bold leading-none text-white md:text-xl">
-          Popular Movie
-        </h2>
-        <a
-          href="/ranking-list"
-          className="group flex items-center gap-1 text-sm font-medium text-white/60 transition-colors hover:text-white"
-        >
-          <span>More</span>
-          <ChevronRight className="h-4 w-4 text-white/60 transition-colors group-hover:text-white" />
-        </a>
-      </div>
+  useEffect(() => {
+    loadData();
+  }, []);
 
-      {/* Dynamic Horizontal Scroll Container */}
-      <div className="group/carousel relative w-full">
-        {/* Left Arrow Button */}
+  // Filter popular movies by genre if selected
+  const filteredMovies =
+    selectedGenre === "All"
+      ? popularMovies
+      : popularMovies.filter(
+          (m) =>
+            m.genres &&
+            m.genres.some((g) => g.toLowerCase() === selectedGenre.toLowerCase())
+        );
+
+  // Error Banner State
+  if (error) {
+    return (
+      <div className="w-full rounded-2xl border border-red-500/20 bg-red-950/20 p-8 text-center space-y-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 text-red-400 mx-auto">
+          <AlertCircle className="h-6 w-6" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-lg font-bold text-white">Unable to Connect to Backend</h3>
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-lg mx-auto">{error}</p>
+        </div>
         <button
-          onClick={() => scroll("left")}
-          aria-label="Scroll Left"
-          className="absolute -left-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/carousel:opacity-100 hover:bg-black md:flex"
+          onClick={loadData}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 transition shadow"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <RefreshCw className="h-3.5 w-3.5" />
+          <span>Retry Connection</span>
         </button>
+      </div>
+    );
+  }
 
-        {/* Scrollable Container with Inline Hidden Scrollbar Utility */}
-        <div
-          ref={scrollContainerRef}
-          className="flex w-full gap-2.5 overflow-x-auto scroll-smooth pb-2 md:gap-3.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
-          {popularMovies.map((movie) => (
-            <a
-              key={movie.id}
-              href={movie.url}
-              title={movie.title}
-              /* Calculates card widths to fit exact counts per row:
-                 3 visible on mobile
-                 4 visible on tablet (sm)
-                 6 visible on desktop (lg)
-                 8 visible on ultra-wide (2xl)
-              */
-              className="group flex w-[calc((100%-1.25rem)/3)] flex-shrink-0 flex-col sm:w-[calc((100%-2rem)/4)] lg:w-[calc((100%-3.5rem)/6)] 2xl:w-[calc((100%-5rem)/8)]"
-            >
-              {/* Poster Container */}
-              <div className="relative h-0 w-full overflow-hidden rounded-t-md bg-[#2b2e39] pb-[140%]">
-                <img
-                  src={movie.image}
-                  alt={movie.title}
-                  className="absolute left-0 top-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
+  // Loading Skeleton State
+  if (isLoading) {
+    return (
+      <div className="w-full space-y-12">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="space-y-4">
+            <div className="h-6 w-52 bg-zinc-800 rounded animate-pulse" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+              {Array.from({ length: 6 }).map((_, j) => (
+                <MovieCardSkeleton key={j} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-              {/* Movie Title Bar */}
-              <div className="flex w-full flex-col items-start justify-center rounded-b-md bg-white/[6%] p-2">
-                <p className="w-full truncate text-xs font-medium text-white/80 transition-colors group-hover:text-white md:text-sm">
-                  {movie.title}
+  return (
+    <div className="w-full space-y-14">
+      {/* SECTION 1: Trending Now */}
+      {trendingNow.length > 0 && (
+        <section className="space-y-4">
+          <MovieCarousel
+            title="Trending Now"
+            subtitle="Most watched releases & hot titles worldwide this week"
+            movies={trendingNow.slice(0, 12)}
+            viewAllLink="/movies"
+          />
+        </section>
+      )}
+
+      {/* SECTION 2: Popular Series */}
+      {popularSeries.length > 0 && (
+        <section className="space-y-4">
+          <MovieCarousel
+            title="Popular TV Shows"
+            subtitle="Top rated television shows, episodic dramas & streaming hits"
+            movies={popularSeries.slice(0, 12)}
+            viewAllLink="/tv-shows"
+          />
+        </section>
+      )}
+
+      {/* SECTION 3: Popular Movies (with Interactive Genre Filters) */}
+      {popularMovies.length > 0 && (
+        <section className="space-y-4 pt-2">
+          <div className="flex items-center justify-between pb-1">
+            <div>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span className="h-5 w-1 rounded-full bg-gradient-to-b from-zinc-200 to-zinc-500" />
+                Popular Movies
+              </h2>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Blockbusters, cinematic masterworks & box office champions
+              </p>
+            </div>
+          </div>
+
+          <MovieGrid
+            title=""
+            movies={filteredMovies}
+            showFilters={true}
+            activeGenre={selectedGenre}
+            onSelectGenre={(g) => setSelectedGenre(g)}
+            genres={GENRES_LIST}
+          />
+        </section>
+      )}
+
+      {/* SECTION 4: Adult Animation */}
+      {adultAnimation.length > 0 && (
+        <section className="space-y-4 pt-4 border-t border-zinc-900/80">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                18+ TV-MA
+              </span>
+              <div>
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                  <span className="h-5 w-1 rounded-full bg-rose-500" />
+                  Adult Animation
+                </h2>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  Cult anime, provocative dark comedies & mature animated epics
                 </p>
               </div>
-            </a>
-          ))}
-        </div>
+            </div>
+          </div>
 
-        {/* Right Arrow Button */}
-        <button
-          onClick={() => scroll("right")}
-          aria-label="Scroll Right"
-          className="absolute -right-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/carousel:opacity-100 hover:bg-black md:flex"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
-      </div>
+          <MovieCarousel
+            title=""
+            subtitle=""
+            movies={adultAnimation.slice(0, 14)}
+            viewAllLink="/genres?genre=Animation"
+          />
+        </section>
+      )}
     </div>
   );
-};
-
-export default MovieCardList;
+}

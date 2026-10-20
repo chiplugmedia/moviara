@@ -1,53 +1,65 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FaPlay, FaInfoCircle } from "react-icons/fa";
 
-// Updated images to high-resolution (w_1920) for full-width displays
 const SLIDES = [
   {
     id: 1,
-    title: "What Happened At WWE SummerSlam 2026 Night",
-    year: "2026",
-    genre: "Wrestling",
+    movieId: "tt0468569",
+    title: "The Dark Knight",
+    year: "2008",
+    genre: "Action, Crime, Drama",
+    description:
+      "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological tests of his ability to fight injustice.",
     bgGradient:
       "linear-gradient(180deg, #4e4649 0%, #4e4649CC 50.12%, #4e464999 75.47%, #4e464900 100%)",
     fullImg:
-      "https://pbcdnw.aoneroom.com/image/2026/08/04/c692ea0e7f7904b799a93bb1535e55c3.jpg?x-oss-process=image/resize%2Cw_1920",
+      "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=1920&auto=format&fit=crop&q=80",
   },
   {
     id: 2,
-    title: "Toy Story 5",
-    year: "2026",
-    genre: "Animation, Adventure, Comedy",
+    movieId: "tt1375666",
+    title: "Inception",
+    year: "2010",
+    genre: "Action, Adventure, Sci-Fi",
+    description:
+      "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
     bgGradient:
       "linear-gradient(180deg, #665a4e 0%, #665a4eCC 50.12%, #665a4e99 75.47%, #665a4e00 100%)",
     fullImg:
-      "https://pbcdnw.aoneroom.com/image/2026/08/18/6974ee3d7a66f38efc6f9716c1c8e243.webp?x-oss-process=image/resize%2Cw_1920",
+      "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&auto=format&fit=crop&q=80",
   },
   {
     id: 3,
-    title: "Lanterns",
-    year: "2026",
-    genre: "Action, Adventure, Crime",
+    movieId: "tt0816692",
+    title: "Interstellar",
+    year: "2014",
+    genre: "Adventure, Drama, Sci-Fi",
+    description:
+      "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival as Earth faces catastrophic famine.",
     bgGradient:
       "linear-gradient(rgb(61, 71, 61) 0%, rgba(61, 71, 61, 0.8) 50.12%, rgba(61, 71, 61, 0.6) 75.47%, rgba(61, 71, 61, 0) 100%)",
     fullImg:
-      "https://pbcdnw.aoneroom.com/image/2026/08/17/54644d0c2c3709671a35bd0b366915e6.webp?x-oss-process=image/resize%2Cw_1920",
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&auto=format&fit=crop&q=80",
   },
   {
     id: 4,
-    title: "Reacher Season 4",
-    year: "2022",
-    genre: "Action, Crime, Drama",
+    movieId: "tt15239678",
+    title: "Dune: Part Two",
+    year: "2024",
+    genre: "Action, Adventure, Drama",
+    description:
+      "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
     bgGradient:
       "linear-gradient(rgb(74, 47, 59) 0%, rgba(74, 47, 59, 0.8) 50.12%, rgba(74, 47, 59, 0.6) 75.47%, rgba(74, 47, 59, 0) 100%)",
     fullImg:
-      "https://pbcdnw.aoneroom.com/image/2026/08/12/327f286fab2ce911b726969035482723.png?x-oss-process=image/resize%2Cw_1920",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1920&auto=format&fit=crop&q=80",
   },
 ];
 
-const AUTO_SLIDE_DURATION = 5000;
+const AUTO_SLIDE_DURATION = 5500;
 
-const Hero = () => {
+export default function Hero() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -63,9 +75,10 @@ const Hero = () => {
 
   return (
     <section
-      className="w-full overflow-hidden rounded-xl md:rounded-2xl"
+      className="w-full overflow-hidden rounded-2xl md:rounded-3xl border border-zinc-800 shadow-2xl"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      aria-label="Featured Movies Carousel"
     >
       <article className="relative h-[65vh] w-full min-h-[480px] md:h-[75vh] md:min-h-[550px]">
         {/* Carousel Wrapper */}
@@ -95,58 +108,53 @@ const Hero = () => {
                   className="absolute inset-0"
                   style={{ background: slide.bgGradient }}
                 />
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#111319] via-[#111319]/70 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent" />
               </div>
 
               {/* Text & Content Overlay */}
               <div className="absolute inset-x-0 bottom-16 z-20 flex flex-col justify-end p-6 md:p-12 lg:p-16">
-                <div className="max-w-2xl">
+                <div className="max-w-2xl space-y-3">
                   {/* Badge */}
                   <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-zinc-200 backdrop-blur-md">
-                    Featured
+                    Featured Premiere
                   </span>
 
                   {/* Title */}
-                  <h1 className="mt-3 text-2xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl md:text-5xl lg:text-6xl">
+                  <h1 className="text-2xl font-black leading-tight text-white drop-shadow-md sm:text-4xl md:text-5xl lg:text-6xl">
                     {slide.title}
                   </h1>
 
                   {/* Metadata */}
-                  <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-medium text-zinc-300 md:text-sm">
-                    <span className="rounded bg-white/20 px-2 py-0.5 font-bold text-white">
+                  <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-zinc-300 md:text-sm">
+                    <span className="rounded bg-white/20 px-2.5 py-0.5 font-bold text-white">
                       {slide.year}
                     </span>
                     <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
                     <span>{slide.genre}</span>
                   </div>
 
-                  {/* Counter */}
-                  <div className="mt-3 flex items-center gap-2 text-xs font-semibold tracking-wider text-zinc-400">
-                    <span className="text-white">
-                      {String(activeSlide + 1).padStart(2, "0")}
-                    </span>
-                    <div className="h-px w-8 bg-zinc-500" />
-                    <span>{String(SLIDES.length).padStart(2, "0")}</span>
-                  </div>
-
                   {/* Description */}
-                  <p className="mt-4 line-clamp-2 max-w-xl text-xs text-zinc-300 sm:line-clamp-3 md:text-sm lg:text-base">
-                    Watch the latest blockbuster content in stunning quality.
-                    Stream instantly with premium entertainment anytime,
-                    anywhere.
+                  <p className="line-clamp-2 max-w-xl text-xs text-zinc-300 sm:line-clamp-3 md:text-sm lg:text-base leading-relaxed">
+                    {slide.description}
                   </p>
 
                   {/* Action Buttons */}
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <button className="flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-xs font-bold text-black transition-transform hover:scale-105 active:scale-95 md:px-6 md:py-3 md:text-sm">
+                  <div className="pt-2 flex flex-wrap gap-3">
+                    <Link
+                      to={`/watch/${slide.movieId}`}
+                      className="flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs sm:text-sm font-bold text-black transition-all hover:opacity-90 active:scale-95 shadow-lg"
+                    >
                       <FaPlay size={12} />
-                      Watch Now
-                    </button>
+                      <span>Watch Stream Now</span>
+                    </Link>
 
-                    <button className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-5 py-2.5 text-xs font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20 active:scale-95 md:px-6 md:py-3 md:text-sm">
+                    <Link
+                      to={`/details/${slide.movieId}`}
+                      className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95"
+                    >
                       <FaInfoCircle size={14} />
-                      More Info
-                    </button>
+                      <span>Movie Details</span>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -161,7 +169,7 @@ const Hero = () => {
               key={index}
               onClick={() => setActiveSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className="relative h-1 flex-1 overflow-hidden rounded-full bg-white/20 transition-all"
+              className="relative h-1 flex-1 overflow-hidden rounded-full bg-white/20 transition-all cursor-pointer"
             >
               <div
                 className={`absolute left-0 top-0 h-full rounded-full transition-all ${
@@ -184,6 +192,4 @@ const Hero = () => {
       </article>
     </section>
   );
-};
-
-export default Hero;
+}

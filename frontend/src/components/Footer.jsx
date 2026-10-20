@@ -1,251 +1,185 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Home, Film, Tv, Search, Clapperboard, Heart } from "lucide-react";
 
 export default function Footer() {
-  // State to track active tab ('home', 'movies', 'search', 'saved', 'profile')
-  const [activeTab, setActiveTab] = useState("home");
+  const location = useLocation();
 
   const navItems = [
-    {
-      id: "home",
-      label: "Home",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "movies",
-      label: "Movies",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "search",
-      label: "Search",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "saved",
-      label: "Saved",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "profile",
-      label: "Profile",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
-      ),
-    },
+    { id: "home", label: "Home", href: "/", icon: Home },
+    { id: "tv-shows", label: "TV Shows", href: "/tv-shows", icon: Tv },
+    { id: "movies", label: "Movies", href: "/movies", icon: Film },
+    { id: "genres", label: "Genres", href: "/genres", icon: Clapperboard },
+    { id: "search", label: "Search", href: "/search", icon: Search },
   ];
 
   return (
     <>
-      {/* Footer Container with adjusted bottom padding on mobile */}
-      <footer className="w-full border-t border-zinc-800 bg-zinc-950 text-white pb-16 md:pb-0">
-        <div className="w-full px-4 sm:px-6 py-12 lg:py-16">
+      {/* Footer Container with bottom padding for mobile bar */}
+      <footer className="w-full border-t border-zinc-800 bg-zinc-950 text-white pb-20 md:pb-0">
+        <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 py-12 lg:py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full">
             {/* Brand */}
-            <div>
-              <h2 className="text-2xl font-black text-white tracking-widest">
-                MOVIARA
-              </h2>
-              <p className="mt-3 text-sm text-zinc-400 leading-relaxed">
-                Stream and download your favorite movies in HD, Full HD and 4K
-                quality anytime, anywhere.
+            <div className="space-y-3">
+              <Link
+                to="/"
+                className="text-2xl font-black text-white tracking-widest flex items-center gap-1.5"
+              >
+                <span>MOVIARA</span>
+                <span className="h-2 w-2 rounded-full bg-zinc-300" />
+              </Link>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                Discover comprehensive movie metadata, synopsis, cast profiles,
+                and verified critic ratings powered by TMDB and OMDb.
               </p>
-            </div>
-
-            {/* Movies */}
-            <div>
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-                Movies
-              </h3>
-              <ul className="space-y-2.5 text-sm text-zinc-400">
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Action
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Adventure
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Comedy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Drama
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-                Company
-              </h3>
-              <ul className="space-y-2.5 text-sm text-zinc-400">
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Contact
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    Terms & Conditions
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Social */}
-            <div>
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-                Follow Us
-              </h3>
-              <div className="flex flex-wrap gap-2.5">
-                <a
-                  href="#"
-                  className="px-3.5 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 transition"
-                >
-                  Facebook
-                </a>
-                <a
-                  href="#"
-                  className="px-3.5 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 transition"
-                >
-                  Instagram
-                </a>
-                <a
-                  href="#"
-                  className="px-3.5 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 transition"
-                >
-                  Twitter
-                </a>
-                <a
-                  href="#"
-                  className="px-3.5 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 transition"
-                >
-                  YouTube
-                </a>
+              <div className="flex items-center gap-2 text-xs text-zinc-500 pt-1">
+                <span className="rounded bg-zinc-900 border border-zinc-800 px-2 py-0.5">
+                  TMDB Metadata
+                </span>
+                <span className="rounded bg-zinc-900 border border-zinc-800 px-2 py-0.5">
+                  Verified Ratings
+                </span>
               </div>
+            </div>
+
+            {/* Popular Genres */}
+            <div>
+              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+                Popular Genres
+              </h3>
+              <ul className="space-y-2.5 text-sm text-zinc-400">
+                <li>
+                  <Link
+                    to="/genres?genre=Action"
+                    className="hover:text-white transition"
+                  >
+                    Action &amp; Adventure
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/genres?genre=Sci-Fi"
+                    className="hover:text-white transition"
+                  >
+                    Sci-Fi &amp; Fantasy
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/genres?genre=Comedy"
+                    className="hover:text-white transition"
+                  >
+                    Comedy &amp; Family
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/genres?genre=Horror"
+                    className="hover:text-white transition"
+                  >
+                    Horror &amp; Thriller
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Platform Links */}
+            <div>
+              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+                Navigation
+              </h3>
+              <ul className="space-y-2.5 text-sm text-zinc-400">
+                <li>
+                  <Link to="/" className="hover:text-white transition">
+                    Featured Releases
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/tv-shows" className="hover:text-white transition">
+                    Popular TV Shows
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/movies" className="hover:text-white transition">
+                    All Movies Library
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/genres" className="hover:text-white transition">
+                    Browse by Category
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/search" className="hover:text-white transition">
+                    Advanced Search
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Community & Legal */}
+            <div>
+              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+                Community
+              </h3>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <span className="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  Discord
+                </span>
+                <span className="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  Telegram
+                </span>
+                <span className="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  Twitter / X
+                </span>
+              </div>
+              <p className="text-xs text-zinc-500">
+                Notice: Moviara is a movie discovery and information platform powered by
+                the TMDB and OMDb APIs. It does not provide video streaming or media downloads.
+              </p>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="w-full mt-12 pt-6 border-t border-zinc-800 text-center text-xs text-zinc-500">
-            © {new Date().getFullYear()} MOVIARA. All Rights Reserved.
+          <div className="w-full mt-12 pt-6 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+            <span>© {new Date().getFullYear()} MOVIARA. All rights reserved.</span>
+            <div className="flex items-center gap-4">
+              <span className="hover:text-zinc-300 cursor-pointer">Privacy Policy</span>
+              <span>•</span>
+              <span className="hover:text-zinc-300 cursor-pointer">Terms of Service</span>
+              <span>•</span>
+              <span className="hover:text-zinc-300 cursor-pointer">DMCA</span>
+            </div>
           </div>
         </div>
       </footer>
 
       {/* Compact Glassmorphic Floating Mobile Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden py-1.5 px-2 bg-zinc-950/70 backdrop-blur-md border-t border-white/10 shadow-xl">
-        <div className="flex items-center justify-around max-w-sm mx-auto">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden py-1.5 px-3 bg-zinc-950/90 backdrop-blur-md border-t border-zinc-800 shadow-2xl">
+        <div className="flex items-center justify-around max-w-md mx-auto">
           {navItems.map((item) => {
-            const isActive = activeTab === item.id;
+            const Icon = item.icon;
+            const isActive =
+              location.pathname === item.href ||
+              (item.href === "/tv-shows" &&
+                (location.pathname === "/series" ||
+                  location.pathname === "/tv" ||
+                  location.pathname.startsWith("/tv/")));
             return (
-              <button
+              <Link
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-lg transition-all duration-200 ${
+                to={item.href}
+                className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? "text-slate-100 bg-gradient-to-b from-slate-200/20 to-slate-400/10 border border-slate-300/30 shadow-[0_0_8px_rgba(203,213,225,0.2)]"
+                    ? "text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-300 font-bold shadow-md"
                     : "text-zinc-400 hover:text-zinc-200"
                 }`}
               >
-                <div
-                  className={
-                    isActive
-                      ? "drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]"
-                      : ""
-                  }
-                >
-                  {item.icon}
-                </div>
-                <span className="text-[9px] font-medium tracking-wide mt-0.5">
+                <Icon size={18} />
+                <span className="text-[10px] font-medium tracking-wide mt-0.5">
                   {item.label}
                 </span>
-              </button>
+              </Link>
             );
           })}
         </div>

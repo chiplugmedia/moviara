@@ -1,0 +1,116 @@
+import React, { useState } from "react";
+import MovieCard from "./MovieCard";
+import MovieCardSkeleton from "./MovieCardSkeleton";
+import { Film, SlidersHorizontal } from "lucide-react";
+
+export default function MovieGrid({
+  movies = [],
+  title = "Explore Movies",
+  isLoading = false,
+  showFilters = false,
+  activeGenre = "All",
+  onSelectGenre,
+  genres = [],
+}) {
+  const [sortBy, setSortBy] = useState("default");
+
+  // Sorting logic
+  const sortedMovies = [...movies].sort((a, b) => {
+    if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
+    if (sortBy === "year") return (b.year || 0) - (a.year || 0);
+    if (sortBy === "title") return a.title.localeCompare(b.title);
+    return 0;
+  });
+
+  return (
+    <section className="w-full space-y-5" aria-label={title}>
+      {/* Grid Top Bar */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-800/80 pb-4">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+            <span className="h-6 w-1 rounded-full bg-gradient-to-b from-zinc-200 to-zinc-500" />
+            {title}
+          </h2>
+          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
+            Showing {movies.length} {movies.length === 1 ? "title" : "titles"}
+          </p>
+        </div>
+
+        {/* Sort Controls */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            <span>Sort by:</span>
+          </div>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-200 focus:border-zinc-600 focus:outline-none transition cursor-pointer"
+          >
+            <option value="default">Default</option>
+            <option value="rating">Highest Rated</option>
+            <option value="year">Newest First</option>
+            <option value="title">Alphabetical (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Genre Filter Tabs (if enabled) */}
+      {showFilters && genres.length > 0 && (
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {genres.map((genre) => {
+            const isSelected = activeGenre === genre;
+            return (
+              <button
+                key={genre}
+                type="button"
+                onClick={() => onSelectGenre && onSelectGenre(genre)}
+                className={`whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  isSelected
+                    ? "bg-gradient-to-r from-zinc-200 via-white to-zinc-300 text-zinc-950 font-semibold shadow-sm"
+                    : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800/80"
+                }`}
+              >
+                {genre}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Grid Content: 2 cols on mobile, 3 on sm, 4 on md, 5 on lg, 6 on xl */}
+      {isLoading ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-4 lg:gap-5">
+          {Array.from({ length: 12 }).map((_, index) => (
+            <MovieCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : sortedMovies.length > 0 ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-4 lg:gap-5">
+          {sortedMovies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      ) : (
+        /* Empty State */
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/30 p-12 text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-800/80 text-zinc-500 mb-3">
+            <Film className="h-7 w-7" />
+          </div>
+          <h3 className="text-base font-semibold text-white">No Movies Found</h3>
+          <p className="mt-1 text-xs text-zinc-400 max-w-sm">
+            We couldn't find any titles matching your filter criteria. Try selecting another category or resetting filters.
+          </p>
+          {onSelectGenre && (
+            <button
+              onClick={() => onSelectGenre("All")}
+              className="mt-4 px-4 py-2 text-xs font-semibold rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white transition"
+            >
+              Reset Filters
+            </button>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
