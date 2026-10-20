@@ -43,34 +43,34 @@ export default function Genres() {
     <div className="min-h-screen bg-zinc-950 text-white flex flex-col justify-between">
       <Header />
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 pt-24 pb-16 sm:px-6 xl:px-8 flex-1 space-y-8">
+      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 sm:pt-24 pb-24 md:pb-16 sm:px-6 xl:px-8 flex-1 space-y-6 sm:space-y-8">
         {/* Genre Browser Top Bar */}
-        <div className="border-b border-zinc-800 pb-6">
-          <div className="flex items-center gap-2.5 text-zinc-400 mb-2">
-            <Clapperboard className="h-5 w-5 text-zinc-300" />
+        <div className="border-b border-zinc-800/80 pb-5 sm:pb-6">
+          <div className="flex items-center gap-2 text-zinc-400 mb-2">
+            <Clapperboard className="h-4 sm:h-5 w-4 sm:w-5 text-zinc-300" />
             <span className="text-xs font-bold uppercase tracking-wider">
               Browse Categories
             </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
             Genres &amp; Collections
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             Explore titles organized by TMDB movie genres with verified metadata.
           </p>
 
-          {/* Genre Badges / Buttons Bar */}
-          <div className="mt-6 flex flex-wrap gap-2">
+          {/* Genre Badges / Buttons Bar with Accessible 42px Touch Target */}
+          <div className="mt-5 sm:mt-6 flex flex-wrap gap-2">
             {GENRES_LIST.map((genre) => {
               const isActive = selectedGenre === genre;
               return (
                 <button
                   key={genre}
                   onClick={() => handleSelectGenre(genre)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition ${
+                  className={`min-h-[42px] flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition active:scale-95 ${
                     isActive
-                      ? "bg-gradient-to-r from-zinc-200 via-white to-zinc-300 text-zinc-950 shadow-md"
-                      : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                      ? "bg-gradient-to-r from-zinc-100 via-white to-zinc-300 text-zinc-950 font-bold shadow-md"
+                      : "bg-zinc-900/90 border border-zinc-800/80 text-zinc-400 hover:text-white hover:bg-zinc-800"
                   }`}
                 >
                   <span>{genre}</span>

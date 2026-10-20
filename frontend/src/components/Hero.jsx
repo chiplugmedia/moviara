@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaPlay, FaInfoCircle } from "react-icons/fa";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const SLIDES = [
   {
@@ -57,11 +58,13 @@ const SLIDES = [
   },
 ];
 
-const AUTO_SLIDE_DURATION = 5500;
+const AUTO_SLIDE_DURATION = 6000;
 
 export default function Hero() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
     if (isPaused) return;
@@ -73,17 +76,47 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [isPaused]);
 
+  // Touch swipe support for mobile
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    setIsPaused(false);
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swipe Left -> Next Slide
+        setActiveSlide((prev) => (prev + 1) % SLIDES.length);
+      } else {
+        // Swipe Right -> Prev Slide
+        setActiveSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+      }
+    }
+  };
+
+  const nextSlide = () => setActiveSlide((prev) => (prev + 1) % SLIDES.length);
+  const prevSlide = () => setActiveSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+
   return (
     <section
-      className="w-full overflow-hidden rounded-2xl md:rounded-3xl border border-zinc-800 shadow-2xl"
+      className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl border border-zinc-800 shadow-2xl"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       aria-label="Featured Movies Carousel"
     >
-      <article className="relative h-[65vh] w-full min-h-[480px] md:h-[75vh] md:min-h-[550px]">
+      <article className="relative h-[68dvh] min-h-[460px] sm:min-h-[500px] md:h-[75dvh] md:min-h-[560px] w-full">
         {/* Carousel Wrapper */}
         <div
-          className="flex h-full w-full transition-transform duration-700 ease-in-out"
+          className="flex h-full w-full transition-transform duration-700 ease-out"
           style={{
             transform: `translateX(-${activeSlide * 100}%)`,
           }}
@@ -108,41 +141,42 @@ export default function Hero() {
                   className="absolute inset-0"
                   style={{ background: slide.bgGradient }}
                 />
-                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-4/5 bg-gradient-to-t from-zinc-950 via-zinc-950/75 to-transparent" />
               </div>
 
-              {/* Text & Content Overlay */}
-              <div className="absolute inset-x-0 bottom-16 z-20 flex flex-col justify-end p-6 md:p-12 lg:p-16">
-                <div className="max-w-2xl space-y-3">
+              {/* Text & Content Overlay with Fluid Typography & Safe Spacing */}
+              <div className="absolute inset-x-0 bottom-14 sm:bottom-16 z-20 flex flex-col justify-end p-4 sm:p-8 md:p-12 lg:p-16">
+                <div className="max-w-2xl space-y-2.5 sm:space-y-3.5">
                   {/* Badge */}
-                  <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-zinc-200 backdrop-blur-md">
-                    Featured Premiere
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-200 backdrop-blur-md">
+                      Featured Premiere
+                    </span>
+                    <span className="rounded bg-white/20 px-2.5 py-0.5 text-[11px] sm:text-xs font-bold text-white backdrop-blur-md">
+                      {slide.year}
+                    </span>
+                  </div>
 
                   {/* Title */}
-                  <h1 className="text-2xl font-black leading-tight text-white drop-shadow-md sm:text-4xl md:text-5xl lg:text-6xl">
+                  <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight text-white drop-shadow-md">
                     {slide.title}
                   </h1>
 
                   {/* Metadata */}
-                  <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-zinc-300 md:text-sm">
-                    <span className="rounded bg-white/20 px-2.5 py-0.5 font-bold text-white">
-                      {slide.year}
-                    </span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
-                    <span>{slide.genre}</span>
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-zinc-300">
+                    <span className="text-zinc-300">{slide.genre}</span>
                   </div>
 
                   {/* Description */}
-                  <p className="line-clamp-2 max-w-xl text-xs text-zinc-300 sm:line-clamp-3 md:text-sm lg:text-base leading-relaxed">
+                  <p className="line-clamp-2 sm:line-clamp-3 text-xs sm:text-sm md:text-base text-zinc-300 leading-relaxed max-w-xl">
                     {slide.description}
                   </p>
 
-                  {/* Action Buttons */}
-                  <div className="pt-2 flex flex-wrap gap-3">
+                  {/* Action Buttons: Responsive Wrap on mobile with >=44px height */}
+                  <div className="pt-2 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-3 max-w-md xs:max-w-none">
                     <Link
                       to={`/watch/${slide.movieId}`}
-                      className="flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs sm:text-sm font-bold text-black transition-all hover:opacity-90 active:scale-95 shadow-lg"
+                      className="flex items-center justify-center gap-2.5 rounded-xl bg-white px-5 py-3 text-xs sm:text-sm font-bold text-zinc-950 transition-all hover:bg-zinc-200 active:scale-95 shadow-lg min-h-[44px]"
                     >
                       <FaPlay size={12} />
                       <span>Watch Stream Now</span>
@@ -150,7 +184,7 @@ export default function Hero() {
 
                     <Link
                       to={`/details/${slide.movieId}`}
-                      className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95"
+                      className="flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 min-h-[44px]"
                     >
                       <FaInfoCircle size={14} />
                       <span>Movie Details</span>
@@ -162,30 +196,48 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* Slide Progress Indicators */}
-        <div className="absolute bottom-6 inset-x-6 z-30 mx-auto flex max-w-xl gap-2 md:bottom-8">
+        {/* Carousel Desktop Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          aria-label="Previous featured movie"
+          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 h-11 w-11 items-center justify-center rounded-full bg-zinc-950/70 border border-zinc-700/80 text-white backdrop-blur-md hover:bg-zinc-900 transition active:scale-95"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          onClick={nextSlide}
+          aria-label="Next featured movie"
+          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 h-11 w-11 items-center justify-center rounded-full bg-zinc-950/70 border border-zinc-700/80 text-white backdrop-blur-md hover:bg-zinc-900 transition active:scale-95"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        {/* Slide Progress Indicators (Accessible >=44px Tap Zone) */}
+        <div className="absolute bottom-3 sm:bottom-6 inset-x-4 sm:inset-x-6 z-30 mx-auto flex max-w-xl gap-2 md:bottom-8">
           {SLIDES.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className="relative h-1 flex-1 overflow-hidden rounded-full bg-white/20 transition-all cursor-pointer"
+              className="group relative flex-1 py-3 cursor-pointer focus:outline-none"
             >
-              <div
-                className={`absolute left-0 top-0 h-full rounded-full transition-all ${
-                  activeSlide === index
-                    ? "w-full bg-white"
-                    : "w-0 bg-transparent"
-                }`}
-                style={{
-                  transitionDuration:
-                    activeSlide === index && !isPaused
-                      ? `${AUTO_SLIDE_DURATION}ms`
-                      : "300ms",
-                  transitionTimingFunction:
-                    activeSlide === index && !isPaused ? "linear" : "ease-out",
-                }}
-              />
+              <div className="relative h-1 w-full overflow-hidden rounded-full bg-white/20 group-hover:bg-white/40 transition-colors">
+                <div
+                  className={`absolute left-0 top-0 h-full rounded-full transition-all ${
+                    activeSlide === index
+                      ? "w-full bg-white shadow-sm"
+                      : "w-0 bg-transparent"
+                  }`}
+                  style={{
+                    transitionDuration:
+                      activeSlide === index && !isPaused
+                        ? `${AUTO_SLIDE_DURATION}ms`
+                        : "300ms",
+                    transitionTimingFunction:
+                      activeSlide === index && !isPaused ? "linear" : "ease-out",
+                  }}
+                />
+              </div>
             </button>
           ))}
         </div>

@@ -215,76 +215,80 @@ export default function TheMovieDetail({ movie, relatedMovies = [] }) {
             </div>
 
             {/* Action Bar: Watch Stream Now & Download */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link
-                to={`/watch/${movie.id}${movie.media_type === "tv" ? "?type=tv" : ""}`}
-                className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-zinc-950 bg-gradient-to-r from-zinc-100 via-white to-zinc-300 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-white/10"
-              >
-                <Play className="h-4 w-4 fill-current" />
-                <span>Watch Stream Now</span>
-              </Link>
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 pt-2">
+              <div className="flex flex-col xs:flex-row gap-2.5 sm:gap-3 flex-1">
+                <Link
+                  to={`/watch/${movie.id}${movie.media_type === "tv" ? "?type=tv" : ""}`}
+                  className="flex-1 min-h-[48px] flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm text-zinc-950 bg-gradient-to-r from-zinc-100 via-white to-zinc-300 hover:opacity-95 active:scale-[0.98] transition-all shadow-lg shadow-white/10"
+                >
+                  <Play className="h-4 w-4 fill-current" />
+                  <span>Watch Stream Now</span>
+                </Link>
 
-              {/* Direct Server Download Button */}
-              <a
-                href={`http://localhost:5000/api/movies/${movie.id}/download?quality=1080p`}
-                download={`${(movie.title || "Movie").replace(/[^a-zA-Z0-9]/g, "_")}_1080p.mp4`}
-                className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 active:scale-[0.98] transition-all shadow-md"
-                title="Download full video file directly from server"
-              >
-                <Download className="h-4 w-4" />
-                <span>{movie.media_type === "tv" ? "Download Episode (.mp4)" : "Download Movie (.mp4)"}</span>
-              </a>
+                {/* Direct Server Download Button */}
+                <a
+                  href={`http://localhost:5000/api/movies/${movie.id}/download?quality=1080p`}
+                  download={`${(movie.title || "Movie").replace(/[^a-zA-Z0-9]/g, "_")}_1080p.mp4`}
+                  className="flex-1 min-h-[48px] flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-95 active:scale-[0.98] transition-all shadow-md"
+                  title="Download full video file directly from server"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>{movie.media_type === "tv" ? "Download (.mp4)" : "Download (.mp4)"}</span>
+                </a>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setShowDownloadModal(true)}
-                className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-zinc-300 border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 hover:text-white transition-all shadow-sm"
-                title="Choose quality (4K / 720p / 480p)"
-              >
-                <span>Options</span>
-              </button>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => setShowDownloadModal(true)}
+                  className="flex-1 sm:flex-initial min-h-[44px] flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold text-xs text-zinc-300 border border-zinc-700/80 bg-zinc-900 hover:bg-zinc-800 hover:text-white transition-all shadow-sm active:scale-95"
+                  title="Choose quality (4K / 720p / 480p)"
+                >
+                  <span>Options</span>
+                </button>
 
-              {/* Add to Watchlist */}
-              <button
-                type="button"
-                onClick={() => setIsBookmarked(!isBookmarked)}
-                title="Add to Watchlist"
-                className={`flex items-center gap-1.5 px-4 py-3.5 rounded-xl text-xs sm:text-sm font-medium border transition ${
-                  isBookmarked
-                    ? "bg-zinc-800 border-zinc-500 text-white"
-                    : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
-                }`}
-              >
-                <Bookmark className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`} />
-                <span>{isBookmarked ? "In Watchlist" : "Watchlist"}</span>
-              </button>
+                {/* Add to Watchlist */}
+                <button
+                  type="button"
+                  onClick={() => setIsBookmarked(!isBookmarked)}
+                  title="Add to Watchlist"
+                  className={`flex-1 sm:flex-initial min-h-[44px] flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-medium border transition-all active:scale-95 ${
+                    isBookmarked
+                      ? "bg-zinc-800 border-zinc-500 text-white"
+                      : "bg-zinc-900 border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800"
+                  }`}
+                >
+                  <Bookmark className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`} />
+                  <span>{isBookmarked ? "Saved" : "Watchlist"}</span>
+                </button>
 
-              {/* Share Button */}
-              <button
-                type="button"
-                onClick={handleShare}
-                title="Share link"
-                className="flex items-center gap-1.5 px-4 py-3.5 rounded-xl text-xs sm:text-sm font-medium border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
-              >
-                {copied ? (
-                  <>
-                    <Check className="h-4 w-4 text-emerald-400" />
-                    <span className="text-emerald-400">Link Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="h-4 w-4" />
-                    <span>Share</span>
-                  </>
-                )}
-              </button>
+                {/* Share Button */}
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  title="Share link"
+                  className="flex-1 sm:flex-initial min-h-[44px] flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-medium border border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all active:scale-95"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="h-4 w-4 text-emerald-400" />
+                      <span className="text-emerald-400">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="h-4 w-4" />
+                      <span>Share</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Where to Watch Section */}
-      <section className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5 sm:p-6 space-y-4 shadow-xl">
+      <section className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6 space-y-4 shadow-xl">
         <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
           <div className="flex items-center gap-2.5">
             <Tv className="h-5 w-5 text-zinc-300" />
@@ -306,17 +310,17 @@ export default function TheMovieDetail({ movie, relatedMovies = [] }) {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 w-full sm:w-auto">
             <Link
               to={`/watch/${movie.id}${movie.media_type === "tv" ? "?type=tv" : ""}`}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 transition shadow-sm whitespace-nowrap"
+              className="min-h-[44px] flex items-center justify-center px-4 py-2.5 rounded-xl text-xs font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-95 transition shadow-sm whitespace-nowrap active:scale-95 text-center"
             >
               Launch Player
             </Link>
             <a
               href={`http://localhost:5000/api/movies/${movie.id}/download?quality=1080p`}
               download={`${(movie.title || "Movie").replace(/[^a-zA-Z0-9]/g, "_")}_1080p.mp4`}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-300 border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 hover:text-white transition whitespace-nowrap flex items-center gap-1.5"
+              className="min-h-[44px] flex items-center justify-center px-4 py-2.5 rounded-xl text-xs font-semibold text-zinc-300 border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 hover:text-white transition whitespace-nowrap gap-1.5 active:scale-95 text-center"
               title="Download movie file from server"
             >
               <Download className="h-3.5 w-3.5 text-zinc-400" />

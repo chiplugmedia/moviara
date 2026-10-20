@@ -142,19 +142,19 @@ export default function TVShows() {
     <div className="min-h-screen bg-zinc-950 text-white flex flex-col justify-between">
       <Header />
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 pt-24 pb-16 sm:px-6 xl:px-8 flex-1 space-y-8">
+      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 sm:pt-24 pb-24 md:pb-16 sm:px-6 xl:px-8 flex-1 space-y-6 sm:space-y-8">
         {/* TV Shows Page Hero Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-900 p-6 sm:p-10 shadow-2xl">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-900 p-5 sm:p-8 lg:p-10 shadow-2xl">
           <div className="relative z-10 max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300">
               <Tv className="h-3.5 w-3.5 text-amber-400" />
               <span>TV Shows &amp; Series Hub</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
               Discover Popular TV Shows
             </h1>
-            <p className="text-sm sm:text-base text-zinc-400">
+            <p className="text-xs sm:text-sm md:text-base text-zinc-400 leading-relaxed">
               Stream and binge full seasons of world-class TV dramas, comedy series, adult animation, and sci-fi hits with complete episode playlists.
             </p>
 
@@ -169,12 +169,12 @@ export default function TVShows() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search TV shows (e.g. Breaking Bad, Arcane, Succession)..."
+                  placeholder="Search series (e.g. Breaking Bad, Arcane)..."
                   className="w-full h-11 pl-10 pr-20 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition min-h-[34px]"
                 >
                   Search
                 </button>
@@ -186,18 +186,21 @@ export default function TVShows() {
           <div className="absolute right-0 top-0 -mr-16 -mt-16 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
         </div>
 
-        {/* Tab Filters */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        {/* Tab Filters with Smooth Snap Scrolling */}
+        <div
+          className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth snap-x snap-mandatory"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           {TV_SHOW_TABS.map((tab) => {
             const isActive = activeTab === tab;
             return (
               <button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
+                className={`min-h-[42px] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 snap-start active:scale-95 flex items-center justify-center ${
                   isActive
-                    ? "bg-gradient-to-r from-zinc-200 via-white to-zinc-300 text-zinc-950 font-bold shadow-lg"
-                    : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                    ? "bg-gradient-to-r from-zinc-100 via-white to-zinc-300 text-zinc-950 font-bold shadow-md"
+                    : "bg-zinc-900/90 border border-zinc-800/80 text-zinc-400 hover:text-white hover:bg-zinc-800"
                 }`}
               >
                 {tab}

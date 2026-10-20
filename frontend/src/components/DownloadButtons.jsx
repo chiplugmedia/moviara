@@ -69,18 +69,18 @@ export default function DownloadButtons({ movie, isOpen, onClose }) {
       aria-modal="true"
       aria-labelledby="download-modal-title"
     >
-      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
+      <div className="relative w-full max-w-lg max-h-[90dvh] overflow-y-auto no-scrollbar rounded-2xl sm:rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6 shadow-2xl">
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-zinc-800 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-zinc-700 to-zinc-900 border border-zinc-700 text-white shadow-inner">
+        <div className="flex items-start justify-between border-b border-zinc-800 pb-3 sm:pb-4">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-gradient-to-br from-zinc-700 to-zinc-900 border border-zinc-700 text-white shadow-inner shrink-0">
               <FileVideo className="h-5 w-5 text-zinc-200" />
             </div>
             <div>
-              <h2 id="download-modal-title" className="text-lg font-bold text-white leading-tight">
+              <h2 id="download-modal-title" className="text-base sm:text-lg font-bold text-white leading-tight">
                 Download {movie.title} (.mp4)
               </h2>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">
                 {movie.year} • Playable Video File • Direct from Server
               </p>
             </div>
@@ -88,19 +88,19 @@ export default function DownloadButtons({ movie, isOpen, onClose }) {
           <button
             onClick={onClose}
             aria-label="Close download modal"
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl p-2 text-zinc-400 hover:bg-zinc-900 hover:text-white transition active:scale-95 shrink-0"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Quality Options Grid */}
-        <div className="my-5 space-y-2.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center justify-between">
+        <div className="my-4 sm:my-5 space-y-2">
+          <label className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center justify-between">
             <span>Select Quality to Download</span>
-            <span className="text-[11px] text-zinc-500 font-normal">Click card to select or download</span>
+            <span className="text-[10px] sm:text-[11px] text-zinc-500 font-normal">Click card to select</span>
           </label>
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
             {downloadOptions.map((item) => {
               const isSelected = selectedQuality === item.quality;
               return (
@@ -111,24 +111,24 @@ export default function DownloadButtons({ movie, isOpen, onClose }) {
                     setSelectedQuality(item.quality);
                     setDownloadCompleted(false);
                   }}
-                  className={`flex flex-col items-start p-3 rounded-xl border text-left transition-all ${
+                  className={`min-h-[72px] flex flex-col items-start p-2.5 sm:p-3 rounded-xl border text-left transition-all active:scale-95 ${
                     isSelected
                       ? "border-zinc-300 bg-zinc-900 text-white shadow-md ring-1 ring-zinc-400"
                       : "border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900"
                   }`}
                 >
                   <div className="flex items-center justify-between w-full">
-                    <span className="text-sm font-bold flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm font-bold flex items-center gap-1">
                       {item.quality}
                       {item.quality.includes("4K") && (
-                        <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                        <Sparkles className="h-3 w-3 text-amber-400" />
                       )}
                     </span>
-                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300">
+                    <span className="text-[9px] sm:text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-zinc-800 text-zinc-300">
                       {item.format}
                     </span>
                   </div>
-                  <div className="mt-2 flex items-center gap-3 text-xs text-zinc-400">
+                  <div className="mt-1.5 flex items-center gap-2 sm:gap-3 text-[11px] text-zinc-400">
                     <span className="flex items-center gap-1">
                       <HardDrive className="h-3 w-3" />
                       {item.size}
@@ -145,7 +145,7 @@ export default function DownloadButtons({ movie, isOpen, onClose }) {
         </div>
 
         {/* Media Details Summary */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3.5 text-xs text-zinc-300 space-y-1.5">
+        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3 sm:p-3.5 text-xs text-zinc-300 space-y-1.5">
           <div className="flex justify-between">
             <span className="text-zinc-500">File Type:</span>
             <span className="font-semibold text-zinc-200">Playable Video (.mp4 / H.264)</span>
@@ -165,20 +165,20 @@ export default function DownloadButtons({ movie, isOpen, onClose }) {
 
         {/* Success Status Banner */}
         {downloadCompleted && (
-          <div className="mt-4 p-3 rounded-xl border border-emerald-500/30 bg-emerald-950/30 flex items-center gap-2 text-xs text-emerald-400 font-medium animate-fade-in">
-            <Check className="h-4 w-4 text-emerald-400 stroke-[3]" />
-            <span>Movie file ({fileName}) download initiated from server! Check your browser downloads.</span>
+          <div className="mt-3 sm:mt-4 p-3 rounded-xl border border-emerald-500/30 bg-emerald-950/30 flex items-center gap-2 text-xs text-emerald-400 font-medium animate-fade-in">
+            <Check className="h-4 w-4 text-emerald-400 stroke-[3] shrink-0" />
+            <span>Movie file ({fileName}) download initiated! Check browser downloads.</span>
           </div>
         )}
 
         {/* Action Buttons: Direct Server Download */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
+        <div className="mt-5 sm:mt-6 flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3">
           {/* Main Action: Native anchor directly triggers server download */}
           <a
             href={downloadUrl}
             download={fileName}
             onClick={() => setDownloadCompleted(true)}
-            className="flex-1 w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-sm font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 active:scale-[0.98] transition-all shadow-md text-center"
+            className="flex-1 w-full min-h-[48px] flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-xs sm:text-sm font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 active:scale-[0.98] transition-all shadow-md text-center"
           >
             <Download className="h-4 w-4" />
             <span>Download {currentOption.quality} (.mp4)</span>
@@ -187,7 +187,7 @@ export default function DownloadButtons({ movie, isOpen, onClose }) {
           <button
             type="button"
             onClick={handleCopyMagnet}
-            className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-medium text-zinc-300 border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 hover:text-white transition whitespace-nowrap"
+            className="w-full sm:w-auto min-h-[48px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-medium text-zinc-300 border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 hover:text-white transition whitespace-nowrap active:scale-95"
           >
             {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
             <span>{copied ? "Magnet Copied" : "Magnet"}</span>

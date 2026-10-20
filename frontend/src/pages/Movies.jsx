@@ -61,18 +61,18 @@ export default function Movies() {
     <div className="min-h-screen bg-zinc-950 text-white flex flex-col justify-between">
       <Header />
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 pt-24 pb-16 sm:px-6 xl:px-8 flex-1 space-y-8">
+      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 sm:pt-24 pb-24 md:pb-16 sm:px-6 xl:px-8 flex-1 space-y-6 sm:space-y-8">
         {/* Page Banner Header */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-900 p-6 sm:p-10 shadow-2xl">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-900 p-5 sm:p-8 lg:p-10 shadow-2xl">
           <div className="relative z-10 max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/80 px-3 py-1 text-xs font-semibold text-zinc-300">
               <Sparkles className="h-3.5 w-3.5 text-zinc-300" />
               <span>Verified TMDB &amp; OMDb Data</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
               Discover Movies
             </h1>
-            <p className="text-sm sm:text-base text-zinc-400">
+            <p className="text-xs sm:text-sm md:text-base text-zinc-400 leading-relaxed">
               Explore thousands of titles with verified ratings, synopsis, and cast powered by TMDB and OMDb.
             </p>
 
@@ -87,12 +87,12 @@ export default function Movies() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search movie database (e.g. Inception, Avatar, Nolan)..."
+                  placeholder="Search movies (e.g. Inception, Avatar)..."
                   className="w-full h-11 pl-10 pr-20 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition min-h-[34px]"
                 >
                   Search
                 </button>

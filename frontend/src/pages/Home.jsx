@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white flex flex-col justify-between">
       <Header />
-      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 pb-16 space-y-12 sm:px-6 xl:px-8 flex-1">
+      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 sm:pt-24 pb-24 md:pb-16 space-y-8 sm:space-y-12 sm:px-6 xl:px-8 flex-1">
         <Hero />
         <PopularMovies />
       </main>

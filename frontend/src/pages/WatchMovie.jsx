@@ -148,7 +148,7 @@ export default function WatchMovie() {
     <div className="min-h-screen bg-zinc-950 text-white flex flex-col justify-between">
       <Header />
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 pt-24 pb-16 sm:px-6 xl:px-8 flex-1 space-y-6">
+      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 sm:pt-24 pb-24 md:pb-16 sm:px-6 xl:px-8 flex-1 space-y-5 sm:space-y-6">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between text-xs sm:text-sm text-zinc-400">
           <div className="flex items-center gap-1.5 truncate">
@@ -166,19 +166,19 @@ export default function WatchMovie() {
             )}
             <Link
               to={`/details/${movie?.id || movieId}`}
-              className="hover:text-white transition truncate"
+              className="hover:text-white transition truncate max-w-[150px] sm:max-w-xs"
             >
               {movie?.title || "Details"}
             </Link>
             <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
             <span className="text-zinc-200 font-medium">
-              {isTv ? `S${selectedSeason} E${selectedEpisode} Stream` : "Watch Stream"}
+              {isTv ? `S${selectedSeason} E${selectedEpisode}` : "Stream"}
             </span>
           </div>
 
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition"
+            className="min-h-[44px] flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition active:scale-95 px-2"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>Back</span>
@@ -187,20 +187,20 @@ export default function WatchMovie() {
 
         {isLoading ? (
           /* Loading Placeholder */
-          <div className="w-full aspect-video max-h-[660px] rounded-3xl bg-zinc-900 border border-zinc-800 animate-pulse flex flex-col items-center justify-center gap-3">
-            <Film className="h-12 w-12 text-zinc-600 animate-spin" />
+          <div className="w-full aspect-video max-h-[660px] rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 animate-pulse flex flex-col items-center justify-center gap-3">
+            <Film className="h-10 w-10 text-zinc-600 animate-spin" />
             <span className="text-xs font-semibold text-zinc-400">Loading Stream Player...</span>
           </div>
         ) : error ? (
           /* Error State */
-          <div className="w-full rounded-2xl border border-red-500/20 bg-red-950/20 p-12 text-center space-y-4">
+          <div className="w-full rounded-2xl border border-red-500/20 bg-red-950/20 p-8 sm:p-12 text-center space-y-4">
             <AlertCircle className="h-10 w-10 text-red-400 mx-auto" />
             <h2 className="text-lg font-bold text-white">Stream Loading Error</h2>
             <p className="text-xs text-zinc-400 max-w-md mx-auto">{error}</p>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={loadData}
-                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 transition"
+                className="min-h-[44px] px-5 py-2.5 rounded-xl text-xs font-semibold text-zinc-950 bg-gradient-to-r from-zinc-200 via-white to-zinc-400 hover:opacity-90 transition active:scale-95"
               >
                 Retry Loading
               </button>
@@ -209,7 +209,7 @@ export default function WatchMovie() {
         ) : (
           <>
             {/* Server Status Header Chip */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-2.5 rounded-xl border border-zinc-800/80 bg-zinc-900/60 backdrop-blur-sm text-xs text-zinc-400">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 px-4 py-2.5 rounded-xl border border-zinc-800/80 bg-zinc-900/60 backdrop-blur-sm text-xs text-zinc-400">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-zinc-200 font-medium">
@@ -222,12 +222,12 @@ export default function WatchMovie() {
               </div>
 
               <div className="flex items-center gap-2 text-[11px] text-zinc-400">
-                <span>Select a streaming server below or download video file directly from server.</span>
+                <span>Fast cloud mirrors &amp; multi-language streams</span>
               </div>
             </div>
 
-            {/* Video Player Container */}
-            <div className="relative w-full aspect-video max-h-[660px] rounded-3xl overflow-hidden bg-black border border-zinc-800 shadow-2xl flex flex-col justify-center">
+            {/* Video Player Container with Proper Aspect Ratio */}
+            <div className="relative w-full aspect-video max-h-[660px] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-zinc-800 shadow-2xl flex flex-col justify-center">
               <iframe
                 key={`${currentServer.id}-${selectedSeason}-${selectedEpisode}`}
                 src={currentServer.url}
@@ -238,25 +238,28 @@ export default function WatchMovie() {
               />
             </div>
 
-            {/* Server Switcher Bar */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl border border-zinc-800 bg-zinc-950">
+            {/* Server Switcher Bar: Smooth Scrolling on Mobile */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-2xl border border-zinc-800 bg-zinc-950">
               <div className="flex items-center gap-2">
                 <Server className="h-4 w-4 text-zinc-400" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                  Select Streaming Server:
+                  Switch Server:
                 </span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+              <div
+                className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full sm:w-auto pb-1 sm:pb-0"
+                style={{ WebkitOverflowScrolling: "touch" }}
+              >
                 {servers.map((server) => {
                   const isActive = activeServerId === server.id;
                   return (
                     <button
                       key={server.id}
                       onClick={() => setActiveServerId(server.id)}
-                      className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                      className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition shrink-0 active:scale-95 ${
                         isActive
-                          ? "bg-gradient-to-r from-zinc-200 via-white to-zinc-300 text-zinc-950 shadow-md font-bold"
+                          ? "bg-gradient-to-r from-zinc-100 via-white to-zinc-300 text-zinc-950 shadow-md font-bold"
                           : "bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800"
                       }`}
                     >
@@ -265,9 +268,9 @@ export default function WatchMovie() {
                           isActive ? "bg-emerald-600 animate-pulse" : "bg-emerald-500"
                         }`}
                       />
-                      <span>{server.name}</span>
+                      <span className="whitespace-nowrap">{server.name}</span>
                       <span
-                        className={`text-[10px] px-1.5 py-0.2 rounded ${
+                        className={`text-[10px] px-1.5 py-0.5 rounded ${
                           isActive
                             ? "bg-zinc-900 text-white font-normal"
                             : "bg-zinc-800 text-zinc-400"
@@ -283,7 +286,7 @@ export default function WatchMovie() {
 
             {/* TV Series Episode & Season Selector (Rendered if TV series) */}
             {isTv && (
-              <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-950 space-y-4">
+              <div className="p-4 sm:p-5 rounded-2xl border border-zinc-800 bg-zinc-950 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-3">
                   <div className="flex items-center gap-2">
                     <Tv className="h-4 w-4 text-amber-400" />
@@ -292,9 +295,12 @@ export default function WatchMovie() {
                     </h3>
                   </div>
 
-                  {/* Season Dropdown or Buttons */}
+                  {/* Season Buttons */}
                   {movie.seasons && movie.seasons.length > 0 && (
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+                    <div
+                      className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0"
+                      style={{ WebkitOverflowScrolling: "touch" }}
+                    >
                       <span className="text-xs text-zinc-400 shrink-0">Season:</span>
                       {movie.seasons.map((s) => (
                         <button
@@ -303,7 +309,7 @@ export default function WatchMovie() {
                             setSelectedSeason(s.season_number);
                             setSelectedEpisode(1);
                           }}
-                          className={`px-3 py-1 rounded-lg text-xs font-semibold transition shrink-0 ${
+                          className={`min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shrink-0 active:scale-95 ${
                             selectedSeason === s.season_number
                               ? "bg-white text-zinc-950 shadow font-bold"
                               : "bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white"
@@ -316,16 +322,16 @@ export default function WatchMovie() {
                   )}
                 </div>
 
-                {/* Episodes Grid */}
+                {/* Episodes Grid with min 44x44px touch compliance */}
                 <div className="space-y-2">
                   <div className="text-xs text-zinc-400 flex items-center justify-between">
                     <span>Select Episode:</span>
                     <span className="text-zinc-500">
-                      Now streaming: Season {selectedSeason}, Episode {selectedEpisode}
+                      S{selectedSeason} E{selectedEpisode}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-2">
+                  <div className="grid grid-cols-4 xs:grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-2">
                     {Array.from({ length: totalEpisodesInSeason }).map((_, idx) => {
                       const epNum = idx + 1;
                       const isCurrent = selectedEpisode === epNum;
@@ -333,9 +339,9 @@ export default function WatchMovie() {
                         <button
                           key={epNum}
                           onClick={() => setSelectedEpisode(epNum)}
-                          className={`flex flex-col items-center justify-center p-2 rounded-xl text-xs font-semibold transition ${
+                          className={`min-h-[46px] flex flex-col items-center justify-center p-2 rounded-xl text-xs font-semibold transition active:scale-95 ${
                             isCurrent
-                              ? "bg-gradient-to-r from-zinc-200 via-white to-zinc-300 text-zinc-950 shadow-md font-bold scale-105"
+                              ? "bg-gradient-to-r from-zinc-100 via-white to-zinc-300 text-zinc-950 shadow-md font-bold scale-105"
                               : "bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                           }`}
                         >
@@ -350,7 +356,7 @@ export default function WatchMovie() {
             )}
 
             {/* Movie Info & Actions Bar */}
-            <div className="flex flex-col md:flex-row items-start justify-between gap-6 p-6 rounded-2xl border border-zinc-800 bg-zinc-950">
+            <div className="flex flex-col md:flex-row items-start justify-between gap-6 p-4 sm:p-6 rounded-2xl border border-zinc-800 bg-zinc-950">
               <div className="space-y-3 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <span className="font-bold text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded border border-amber-400/20 flex items-center gap-1">

@@ -67,42 +67,43 @@ export default function Search() {
     <div className="min-h-screen bg-zinc-950 text-white flex flex-col justify-between">
       <Header />
 
-      <main className="mx-auto w-full max-w-[1600px] px-3 pt-24 pb-16 sm:px-6 xl:px-8 flex-1 space-y-8">
+      <main className="mx-auto w-full max-w-[1600px] px-3 pt-20 sm:pt-24 pb-24 md:pb-16 sm:px-6 xl:px-8 flex-1 space-y-6 sm:space-y-8">
         {/* Search Input Hero Section */}
-        <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 sm:p-8 space-y-4">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+        <div className="rounded-2xl sm:rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5 sm:p-8 space-y-3 sm:space-y-4">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
             Search Movie Database
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400">
-            Search across millions of movie titles, franchises, and keywords via TMDB.
+            Search across thousands of movie titles, franchises, and genres via TMDB.
           </p>
 
-          <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-3 pt-1 sm:pt-2">
             {/* Input Bar */}
             <div className="relative flex-1 w-full">
               <SearchIcon
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none"
               />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Type movie title (e.g. Inception, Marvel, Matrix)..."
-                className="w-full h-12 pl-12 pr-24 bg-zinc-950 border border-zinc-700 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition"
+                placeholder="Type movie title (e.g. Inception, Marvel)..."
+                className="w-full h-12 pl-11 pr-24 bg-zinc-950 border border-zinc-700/80 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 transition"
               />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="absolute right-14 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+                  className="min-h-[36px] min-w-[36px] flex items-center justify-center absolute right-14 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1"
+                  aria-label="Clear search text"
                 >
                   <X size={16} />
                 </button>
               )}
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition"
+                className="min-h-[36px] absolute right-1.5 top-1/2 -translate-y-1/2 px-3.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition active:scale-95"
               >
                 Find
               </button>
@@ -113,7 +114,8 @@ export default function Search() {
               <select
                 value={selectedGenre}
                 onChange={(e) => setSelectedGenre(e.target.value)}
-                className="h-12 w-full sm:w-44 px-3 bg-zinc-950 border border-zinc-700 rounded-xl text-xs sm:text-sm text-zinc-300 focus:border-zinc-400 focus:outline-none cursor-pointer"
+                aria-label="Filter by genre"
+                className="h-12 w-full sm:w-44 px-3.5 bg-zinc-950 border border-zinc-700/80 rounded-xl text-xs sm:text-sm text-zinc-300 focus:border-zinc-400 focus:outline-none cursor-pointer"
               >
                 {GENRES_LIST.map((g) => (
                   <option key={g} value={g}>
